@@ -1,10 +1,11 @@
-// src/screens/onboarding/OnboardingScreen2.js
+// src/screens/onboarding/OnboardingScreen4.js
 import React from 'react';
 import {
   SafeAreaView,
   View,
   Text,
   TouchableOpacity,
+  Image,
   StatusBar,
   StyleSheet,
   Dimensions
@@ -13,7 +14,13 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 const { width, height } = Dimensions.get('window');
 
-const OnboardingScreen2 = ({ navigation, onContinue, onSkip }) => {
+const OnboardingScreen4 = ({ navigation, onContinue, onSkip }) => {
+  const features = [
+    { icon: 'add-circle', text: 'Create tasks' },
+    { icon: 'calendar-month', text: 'Set deadlines' },
+    { icon: 'check-box', text: 'Stay organized' }
+  ];
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#f6f5f8" />
@@ -23,26 +30,32 @@ const OnboardingScreen2 = ({ navigation, onContinue, onSkip }) => {
         {/* Pagination Dots */}
         <View style={styles.pagination}>
           <View style={[styles.dot, styles.inactiveDot]} />
-          <View style={[styles.dot, styles.inactiveDot]} />
-          <View style={[styles.dot, styles.inactiveDot]} />
           <View style={[styles.dot, styles.activeDot]} />
+          <View style={[styles.dot, styles.inactiveDot]} />
+          <View style={[styles.dot, styles.inactiveDot]} />
           <View style={[styles.dot, styles.inactiveDot]} />
         </View>
 
-        {/* Icon Section */}
-        <View style={styles.iconContainer}>
-          <View style={styles.iconBackgroundCircle} />
-          <View style={styles.mainIconCircle}>
-            <MaterialIcons name="groups" size={64} color="#FFFFFF" />
-          </View>
+        {/* Image Section */}
+        <View style={styles.imageContainer}>
+          <View style={styles.imageBackgroundCircle} />
+          <Image 
+            source={{ uri: "https://lh3.googleusercontent.com/aida-public/AB6AXuDc7Fs8GxiyqBRAHnTlTAYGREElJyGc9w0gnaxwPbwEfJ3Rpc-ND5ppMiu4o0EDMY2av906VHSDyOy1dOb5mxvoAIQDfWj2et7_11UqdZIRDfXSqB29YH7fn5sUe4mqGrhr9TLj3iikdaig6-zj3zFDH1S24_ruFxXEytIefwUVjCmBN38v57NusT6RW-RRt1rX38WO1Tdbf17bf-2sbPEdUrDDByqhpIQyKVv5plsMrXoqY1ZZqoGS7f0jj_RCmtxJYodrkIBioGuC" }}
+            style={styles.trackingImage}
+            resizeMode="contain"
+          />
         </View>
 
         {/* Text Content */}
         <View style={styles.textContainer}>
-          <Text style={styles.title}>Join a Guild</Text>
-          <Text style={styles.description}>
-            Study together and help your team level up!
-          </Text>
+          <Text style={styles.title}>Track Your Quests</Text>
+          
+          {/* Features List */}
+          <View style={styles.featuresContainer}>
+            {features.map((feature, index) => (
+              <FeatureItem key={index} icon={feature.icon} text={feature.text} />
+            ))}
+          </View>
         </View>
       </View>
 
@@ -52,19 +65,28 @@ const OnboardingScreen2 = ({ navigation, onContinue, onSkip }) => {
           style={styles.primaryButton}
           onPress={onContinue}
         >
-          <Text style={styles.primaryButtonText}>Find a Guild</Text>
+          <Text style={styles.primaryButtonText}>Continue</Text>
         </TouchableOpacity>
         
         <TouchableOpacity 
           style={styles.secondaryButton}
           onPress={onSkip}
         >
-          <Text style={styles.secondaryButtonText}>I'll do this later</Text>
+          <Text style={styles.secondaryButtonText}>Skip</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
 };
+
+const FeatureItem = ({ icon, text }) => (
+  <View style={styles.featureItem}>
+    <View style={styles.featureIcon}>
+      <MaterialIcons name={icon} size={24} color="#4725f4" />
+    </View>
+    <Text style={styles.featureText}>{text}</Text>
+  </View>
+);
 
 const styles = StyleSheet.create({
   container: {
@@ -73,15 +95,15 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     paddingHorizontal: 24,
+    paddingTop: 40,
   },
   pagination: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
     marginBottom: 40,
+    justifyContent: 'center',
   },
   dot: {
     width: 8,
@@ -93,55 +115,73 @@ const styles = StyleSheet.create({
   },
   inactiveDot: {
     backgroundColor: '#4725f4',
-    opacity: 0.3,
+    opacity: 0.2,
   },
-  iconContainer: {
-    width: 200,
-    height: 200,
+  imageContainer: {
+    width: width * 0.8,
+    height: width * 0.8,
+    position: 'relative',
     justifyContent: 'center',
     alignItems: 'center',
-    position: 'relative',
-    marginBottom: 60,
+    alignSelf: 'center',
+    marginBottom: 40,
   },
-  iconBackgroundCircle: {
+  imageBackgroundCircle: {
     position: 'absolute',
     width: '100%',
     height: '100%',
-    borderRadius: 100,
+    borderRadius: (width * 0.8) / 2,
     backgroundColor: '#4725f4',
     opacity: 0.1,
   },
-  mainIconCircle: {
-    width: 160,
-    height: 160,
-    borderRadius: 80,
-    backgroundColor: '#4725f4',
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: '#4725f4',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.4,
-    shadowRadius: 16,
-    elevation: 16,
+  trackingImage: {
+    width: '80%',
+    height: '80%',
   },
   textContainer: {
     alignItems: 'center',
+    marginBottom: 40,
   },
   title: {
     fontSize: 32,
     fontWeight: 'bold',
     color: '#100d1c',
     textAlign: 'center',
-    marginBottom: 12,
+    marginBottom: 32,
     lineHeight: 38,
   },
-  description: {
+  featuresContainer: {
+    width: '100%',
+    gap: 12,
+  },
+  featureItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 16,
+    backgroundColor: '#FFFFFF',
+    padding: 16,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 2,
+  },
+  featureIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 8,
+    backgroundColor: 'rgba(71, 37, 244, 0.1)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  featureText: {
     fontSize: 16,
-    color: 'rgba(16, 13, 28, 0.8)',
-    textAlign: 'center',
-    lineHeight: 22,
-    paddingHorizontal: 20,
-    maxWidth: 300,
+    fontWeight: '500',
+    color: '#100d1c',
+    flex: 1,
   },
   buttonContainer: {
     padding: 24,
@@ -173,11 +213,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   secondaryButtonText: {
-    color: '#4725f4',
+    color: '#666',
     fontSize: 16,
     fontWeight: 'bold',
     letterSpacing: 0.015,
   },
 });
 
-export default OnboardingScreen2;
+export default OnboardingScreen4;
